@@ -41,28 +41,31 @@ def login():
 @app.route('/register', methods=["GET", "POST"])
 def register():
     # Check if "username" and "password" POST requests exist (user submitted form)
-    if request.method == 'POST' and 'username' in request.form and 'password' in request.form:
+    if request.method == 'POST' and 'username' in request.form and 'password' in request.form and 'email' in request.form:
         # Create variables for easy access
         username = request.form['username']
         password = request.form['password']
+        email = request.form['email']
+ 
         # Check if account exists using MySQL
         query = 'SELECT * FROM Users WHERE username = %s AND password = %s'
         cursor = db.execute_query(db_connection=db_connection, query=query, query_params=(username, password))
         # Fetch one record and return result
         account = cursor.fetchone()
-        # If account exists in accounts table in out database
+        # If account exists in accounts table, return error
         if account:
+            msg = "User already exists!"
+            return render_template('register.html', msg=msg)
+        else:
+            # Account doesnt exist
+            query = 'INSERT INTO `Users` (`username`, `email`, `password`) VALUES (%s, %s, %s);'
+            cursor = db.execute_query(db_connection=db_connection, query=query, query_params=(username, password, email))
             # Create session data, we can access this data in other routes
             session['loggedin'] = True
             session['id'] = account['userId']
             session['username'] = account['username']
             # Redirect to home page
             return render_template('index.html')
-        else:
-            # Account doesnt exist or username/password incorrect
-            msg = 'Incorrect username/password!'
-            return render_template('login.html', msg=msg)
-
     # Show the login form with message (if any)
     return render_template('login.html')
 
