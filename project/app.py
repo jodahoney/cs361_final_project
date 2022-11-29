@@ -1,6 +1,7 @@
 from flask import Flask, render_template, json, request, redirect, session, url_for
 import database.db_connector as db
 import os
+import requests
 
 app = Flask(__name__)
 app.secret_key = '1234'
@@ -94,8 +95,51 @@ def index():
                 cursor = db.execute_query(db_connection=db_connection, query=meal_log_query)
                 meal_log_data = cursor.fetchall()
 
+                food_query = "SELECT * FROM Foods"
+                cursor = db.execute_query(db_connection=db_connection, query=food_query)
+                food_data = cursor.fetchall()
 
-                return render_template('index.html', meal_log_data=meal_log_data)
+                meal_query = "SELECT * FROM Meals WHERE createdBy = %s;" % (session['id'])
+                cursor = db.execute_query(db_connection=db_connection, query=meal_query)
+                meal_data = cursor.fetchall()
+
+                return render_template('index.html', meal_log_data=meal_log_data, food_data=food_data, meal_data=meal_data)
+
+            if request.method == "POST":
+                # create meal
+                if request.form.get("add_meal"):
+                    foods = request.form.getlist("food-select")
+
+                    # calculate total calories of the meal using partners microservice
+                    total_calories = 0
+
+                    for foodId in foods:
+                        query = "SELECT carbohydrate, fat, protein FROM Foods WHERE foodId = %s;" % (foodId)
+                        cursor = db.execute_query(db_connection=db_connection, query=query)
+                        data = cursor.fetchone()
+                        
+                        for key in data:
+                            macro_name = str(key)
+                            if key in data:
+                                num_macros = data[key]
+                            
+                                # # if key in data:
+                                response = requests.get(f'http://127.0.0.1:5000/calculate-cals/{macro_name}/{num_macros}')
+                                data = response.json()
+                                total_calories += data['calories']
+
+                    # so now we have total calories using partner's microservice
+                    query = "INSERT INTO Meals (totalCalories, CreatedBy) VALUES (%s, %s);" % (total_calories, session['id'])
+                    cursor = db.execute_query(db_connection=db_connection, query=query)
+
+
+
+
+                    
+
+
+                return redirect(url_for('index'))
+
         else:
             return render_template('login.html')
     else:

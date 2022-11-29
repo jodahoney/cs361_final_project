@@ -10,10 +10,55 @@
     <h1>Welcome to Trackagram {{ session['username'] }}</h1>
 
     <br/>
-    <div class="meal-log">
-      <h2>Your meal log:</h2>
-      {{ meal_log_data }}
+
+    <div class="add-meal">
+      <h2>Add a meal:</h2>
+      
+      
+      <form id="addMeal" action="{{ url_for('index') }}" method="post">
+        <div class="row">
+          <div class="form-group col" >
+            <label for="food-select">food</label>
+            <select class="form-select" multiple name="food-select">
+              {% for food in food_data %}
+              <option value={{food.foodId}}>
+                {{ food.foodName }}, 
+                Carb: {{ food.carbohydrate }},
+                Fat: {{ food.fat }},
+                Protein: {{ food.protein }}
+              </option>
+              {% endfor %}
+            </select>
+            </div>
+          </div>
+          
+        <br><br>
+        <input type="submit" name="add_meal" value="Add Meal" class="btn btn-primary">
+      </form>
+
     </div>
+
+    <div class="meal_list">
+      <table class="table">
+        {% for meal in meal_data %} 
+          <tr>
+            <td>Total Calories: {{ meal.totalCalories }}</td>
+            <td>
+              <a href="">
+                  <i class="fa-solid fa-pen-to-square"></i>
+              </a>
+              |
+              <a href="">
+                  <i class="fa-solid fa-delete-left"></i>
+              </a>
+              
+          </td>
+          </tr>
+        {% endfor %}
+      </table>
+      
+    </div>
+    
     
 
   {% else %}
