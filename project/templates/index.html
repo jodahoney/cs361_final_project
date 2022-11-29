@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 
 {% block header %}
-  <h1>{% block title %}Trackagram{% endblock %}</h1>
 {% endblock %}
 
 {% block content %}
@@ -10,7 +9,12 @@
   {% if session['username'] %}
     <h1>Welcome to Trackagram {{ session['username'] }}</h1>
 
-    {{ meal_log_data }}
+    <br/>
+    <div class="meal-log">
+      <h2>Your meal log:</h2>
+      {{ meal_log_data }}
+    </div>
+    
 
   {% else %}
     <h1>Welcome to Trackagram</h1>

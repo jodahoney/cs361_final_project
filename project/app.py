@@ -113,6 +113,7 @@ def settings():
         if request.method == "POST":
             return render_template('settings.html')
 
+
 @app.route('/learning')
 def learning():
     return render_template('learning.html')
