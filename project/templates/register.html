@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block header %}
+{% endblock %}
+
+{% block content %}
+  <h1>Login to Trackagram</h1>
+
+  {{ msg }}
+
+  <form id="login" action="{{ url_for('login') }}" method="post">
+    <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" class="form-control" id="username" name="username" placeholder="Enter Username">
+
+        <label for="password">password</label>
+        <input type="text" class="form-control" id="password" name="password" placeholder="Enter Username">
+    </div>
+
+    <input type="submit" name="login" value="login" class="btn btn-primary">
+  </form>
+
+  <p>This will be the register button</p>
+
+
+{% endblock %}

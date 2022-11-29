@@ -155,9 +155,9 @@ def edit_contact():
         else:
             return redirect(url_for('settings'))
 
-@app.route('/advanced_settings', method=["GET", "POST"])
+@app.route('/advanced_settings', methods=["GET", "POST"])
 def edit_advanced():
-     if request.method == "GET":
+    if request.method == "GET":
         query = "SELECT password FROM Users WHERE userId = '%s';" % (session['id'])
         cursor = db.execute_query(db_connection=db_connection, query=query)
         data = cursor.fetchone()
@@ -172,8 +172,12 @@ def edit_advanced():
             cursor = db.execute_query(db_connection=db_connection, query=query, query_params=query_params)
 
             return redirect(url_for('settings'))
-        else:
-            return redirect(url_for('settings')) 
+        elif request.form.get("delete_account"):
+            query = "DELETE FROM Users WHERE userId = '%s';" % (session['id'])
+            cursor = db.execute_query(db_connection=db_connection, query=query)
+
+            return redirect(url_for('login'))
+       
 
 
 @app.route('/learning')

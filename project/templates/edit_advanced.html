@@ -31,15 +31,10 @@
 
     <br/>
     <h4>Delete your account:</h4>
-    <form id="editAdvanced" action="{{ url_for('edit_advanced') }}" method="post">
+    <form id="deleteAccount" action="{{ url_for('delete_account') }}" method="post">
 
-        <div class="form-group">
-            <label for="password">New password </label>
-            <input type="text" class="form-control" id="password" name="password" placeholder="Enter password">
-        </div>
-
-        <br><br>
-        <input type="submit" name="edit_advanced" value="edit advanced" class="btn btn-primary">
+        <p>Delete your account</p>
+        <input type="submit" name="delete_account" value="delete account" class="btn btn-primary">
     </form>
 
 {% endblock %}
