@@ -143,21 +143,17 @@ def edit_contact():
         return render_template('edit_contact.html', data=data)
     if request.method == "POST":
         # run sql query to update
-        if request.form.get("edit_metrics"):
-            height = request.form["height"]
-            weight = request.form["weight"]
-            age = request.form["age"]
+        if request.form.get("edit_contact"):
+            username = request.form["username"]
+            email = request.form["email"]
 
-            query = "UPDATE Users SET height = '%s', weight = '%s', age = '%s' WHERE userId = '%s';"
-            query_params=(height, weight, age, session['id'])
+            query = "UPDATE Users SET username = %s, email = %s WHERE userId = %s;"
+            query_params=(username, email, session['id'])
             cursor = db.execute_query(db_connection=db_connection, query=query, query_params=query_params)
 
-            query = "SELECT * FROM Users WHERE userId = '%s';" % (session['id'])
-            cursor = db.execute_query(db_connection=db_connection, query=query)
-            data = cursor.fetchone()
-            return render_template('settings.html', data=data)
+            return redirect(url_for('settings'))
         else:
-            return redirect('index.html')
+            return redirect(url_for('settings'))
 
 
 @app.route('/learning')

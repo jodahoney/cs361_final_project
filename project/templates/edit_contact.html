@@ -18,4 +18,21 @@
         </tr>
     </table>
 
+    <h4>Update your contact information:</h4>
+    <form id="editContact" action="{{ url_for('edit_contact') }}" method="post">
+
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" class="form-control" id="username" name="username" placeholder="Enter usrname">
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" class="form-control" id="email" name="email" placeholder="Enter email">
+        </div>
+
+        <br><br>
+        <input type="submit" name="edit_contact" value="edit contact" class="btn btn-primary">
+    </form>
+
 {% endblock %}
