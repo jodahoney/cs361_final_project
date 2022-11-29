@@ -58,16 +58,18 @@ def register():
             return render_template('register.html', msg=msg)
         else:
             # Account doesnt exist
-            query = 'INSERT INTO `Users` (`username`, `email`, `password`) VALUES (%s, %s, %s);'
-            cursor = db.execute_query(db_connection=db_connection, query=query, query_params=(username, password, email))
-            # Create session data, we can access this data in other routes
-            session['loggedin'] = True
-            session['id'] = account['userId']
-            session['username'] = account['username']
-            # Redirect to home page
-            return render_template('index.html')
-    # Show the login form with message (if any)
-    return render_template('login.html')
+            query = "INSERT INTO Users \
+                (username, email, password) \
+                VALUES (%s, %s, %s);"
+            cursor = db.execute_query(
+                db_connection=db_connection, 
+                query=query, 
+                query_params=(username, email, password)
+                )
+            return redirect(url_for('login'))
+    
+    if request.method == "GET":
+        return render_template('register.html')
 
 @app.route('/logout')
 def logout():
@@ -176,7 +178,7 @@ def edit_advanced():
             query = "DELETE FROM Users WHERE userId = '%s';" % (session['id'])
             cursor = db.execute_query(db_connection=db_connection, query=query)
 
-            return redirect(url_for('login'))
+            return redirect(url_for('logout'))
        
 
 

@@ -4,20 +4,26 @@
 {% endblock %}
 
 {% block content %}
-  <h1>Login to Trackagram</h1>
+  <h1>Register to Trackagram</h1>
 
   {{ msg }}
 
-  <form id="login" action="{{ url_for('login') }}" method="post">
+  <form id="register" action="{{ url_for('register') }}" method="post">
     <div class="form-group">
         <label for="username">Username</label>
         <input type="text" class="form-control" id="username" name="username" placeholder="Enter Username">
 
-        <label for="password">password</label>
-        <input type="text" class="form-control" id="password" name="password" placeholder="Enter Username">
+        <label for="email">Email</label>
+        <input type="text" class="form-control" id="email" name="email" placeholder="Enter email">
+
+        <label for="password">Password</label>
+        <input type="password" class="form-control" id="password" name="password" placeholder="Enter Password">
+
+        <label for="conf-password">Confirm Password</label>
+        <input type="password" class="form-control" id="conf-password" name="conf-password" placeholder="Confirm Password">
     </div>
 
-    <input type="submit" name="login" value="login" class="btn btn-primary">
+    <input type="submit" name="register" value="register" class="btn btn-primary">
   </form>
 
   <p>This will be the register button</p>
