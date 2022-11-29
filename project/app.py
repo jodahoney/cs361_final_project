@@ -155,6 +155,26 @@ def edit_contact():
         else:
             return redirect(url_for('settings'))
 
+@app.route('/advanced_settings', method=["GET", "POST"])
+def edit_advanced():
+     if request.method == "GET":
+        query = "SELECT password FROM Users WHERE userId = '%s';" % (session['id'])
+        cursor = db.execute_query(db_connection=db_connection, query=query)
+        data = cursor.fetchone()
+        return render_template('edit_advanced.html', data=data)
+    if request.method == "POST":
+        # run sql query to update
+        if request.form.get("edit_advanced"):
+            password = request.form["password"]
+
+            query = "UPDATE Users SET password = %s WHERE userId = %s;"
+            query_params=(password, session['id'])
+            cursor = db.execute_query(db_connection=db_connection, query=query, query_params=query_params)
+
+            return redirect(url_for('settings'))
+        else:
+            return redirect(url_for('settings')) 
+
 
 @app.route('/learning')
 def learning():

@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block header %}
+{% endblock %}
+
+{% block content %}
+    <h1>Warning, making changes in the following menu will be irreversible!</h1>
+    <br/>
+    <h2>Edit your profile password:</h2>
+
+    <h4>Your current password:</h4>
+    <table class="table">
+        <tr>
+            <td>Password: </td>
+            <td>{{ data['password'] }}</td>
+        </tr>
+    </table>
+
+    <br/>
+    <h4>Update your password:</h4>
+    <form id="editAdvanced" action="{{ url_for('edit_advanced') }}" method="post">
+
+        <div class="form-group">
+            <label for="password">New password </label>
+            <input type="text" class="form-control" id="password" name="password" placeholder="Enter password">
+        </div>
+
+        <br><br>
+        <input type="submit" name="edit_advanced" value="edit advanced" class="btn btn-primary">
+    </form>
+
+    <br/>
+    <h4>Delete your account:</h4>
+    <form id="editAdvanced" action="{{ url_for('edit_advanced') }}" method="post">
+
+        <div class="form-group">
+            <label for="password">New password </label>
+            <input type="text" class="form-control" id="password" name="password" placeholder="Enter password">
+        </div>
+
+        <br><br>
+        <input type="submit" name="edit_advanced" value="edit advanced" class="btn btn-primary">
+    </form>
+
+{% endblock %}
