@@ -37,7 +37,6 @@ def login():
     # Show the login form with message (if any)
     return render_template('login.html')
 
-
 @app.route('/register', methods=["GET", "POST"])
 def register():
     # Check if "username" and "password" POST requests exist (user submitted form)
@@ -85,7 +84,6 @@ def logout():
     else:
         return render_template('index.html')
 
-
 @app.route('/', methods=["GET", "POST"])
 def index():
     if 'loggedin' in session:
@@ -102,6 +100,29 @@ def index():
             return render_template('login.html')
     else:
         return render_template('login.html')
+
+@app.route('/add_food', methods=["GET", "POST"])
+def add_food():
+    if request.method == "POST":
+        if request.form.get("add_food"):
+            foodName = request.form["foodName"]
+            carbohydrate = request.form.get("carbohydrate")
+            fat = request.form["fat"]
+            protein = request.form["protein"]
+
+            query = "INSERT INTO Foods \
+                (foodName, carbohydrate, fat, protein) \
+                VALUES (%s, %s, %s, %s);"
+
+            cursor = db.execute_query(
+                db_connection=db_connection, 
+                query=query, 
+                query_params=(foodName, carbohydrate, fat, protein)
+            )
+            return redirect(url_for('add_food'))
+
+    if request.method == "GET":
+        return render_template("add_food.html")
 
 @app.route('/settings', methods=["GET", "POST"])
 def settings():

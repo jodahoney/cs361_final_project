@@ -24,6 +24,7 @@
         <h5><a href="{{ url_for('index') }}">Trackagram</a></h5>
         {% if session['username'] %}
           <ul>
+            <li><a href="{{ url_for('add_food') }}">Add your Foods</a></li>
             <li><a href="{{ url_for('learning') }}">Learn More</a></li>
             <li><a href="{{ url_for('settings') }}">Settings</a></li>
             <li><a href="{{ url_for('logout') }}">Logout</a></li>
