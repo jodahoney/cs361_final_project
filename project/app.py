@@ -1,4 +1,4 @@
-from flask import Flask, render_template, json, request, redirect, session
+from flask import Flask, render_template, json, request, redirect, session, url_for
 import database.db_connector as db
 import os
 
@@ -112,6 +112,52 @@ def settings():
             return render_template('settings.html', data=data)
         if request.method == "POST":
             return render_template('settings.html')
+
+@app.route('/edit_metrics', methods=["GET", "POST"])
+def edit_metrics():
+    if request.method == "GET":
+        query = "SELECT height, weight, age FROM Users WHERE userId = '%s';" % (session['id'])
+        cursor = db.execute_query(db_connection=db_connection, query=query)
+        data = cursor.fetchone()
+        return render_template('edit_metrics.html', data=data)
+    if request.method == "POST":
+        # run sql query to update
+        # run sql query to update
+        if request.form.get("edit_metrics"):
+            height = request.form["height"]
+            weight = request.form["weight"]
+            age = request.form["age"]
+
+            query = "UPDATE Users SET height = %s, weight = %s, age = %s WHERE userId = %s;"
+            query_params=(height, weight, age, session['id'])
+            cursor = db.execute_query(db_connection=db_connection, query=query, query_params=query_params)
+        
+        return redirect(url_for('settings'))
+
+@app.route('/edit_contact', methods=["GET", "POST"])
+def edit_contact():
+    if request.method == "GET":
+        query = "SELECT username, email FROM Users WHERE userId = '%s';" % (session['id'])
+        cursor = db.execute_query(db_connection=db_connection, query=query)
+        data = cursor.fetchone()
+        return render_template('edit_contact.html', data=data)
+    if request.method == "POST":
+        # run sql query to update
+        if request.form.get("edit_metrics"):
+            height = request.form["height"]
+            weight = request.form["weight"]
+            age = request.form["age"]
+
+            query = "UPDATE Users SET height = '%s', weight = '%s', age = '%s' WHERE userId = '%s';"
+            query_params=(height, weight, age, session['id'])
+            cursor = db.execute_query(db_connection=db_connection, query=query, query_params=query_params)
+
+            query = "SELECT * FROM Users WHERE userId = '%s';" % (session['id'])
+            cursor = db.execute_query(db_connection=db_connection, query=query)
+            data = cursor.fetchone()
+            return render_template('settings.html', data=data)
+        else:
+            return redirect('index.html')
 
 
 @app.route('/learning')
