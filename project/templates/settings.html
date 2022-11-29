@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Trackagram{% endblock %}</h1>
+  <h3>Your settings {{ session['username'] }}:</h3>
+{% endblock %}
+
+{% block content %}
+
+    <table class="table">
+        {% for value in data %} 
+        {% if value not in ['userId', 'mealLogs_mealLogId'] %}
+        <tr>
+            <td>{{ value }}</td> <td>{{ data[value] }}</td>
+        </tr>
+        {% endif %}
+        {% endfor %}
+        <tr>
+            <td>
+                <a href="">
+                    <i class="fa-solid fa-pen-to-square"></i>Edit your metrics
+                </a>
+            </td>
+            
+        </tr>
+        <tr>
+            <td>
+                <a href="">
+                    <i class="fa-solid fa-pen-to-square"></i>Edit your contact info
+                </a>
+            </td>
+            
+        </tr>
+        <tr>
+            <td>
+                <a href="">
+                    <i class="fa-solid fa-pen-to-square"></i>Advanced Settings
+                </a>
+            </td>
+            
+        </tr>
+        
+    </table>
+
+    
+    
+
+    
+
+
+{% endblock %}

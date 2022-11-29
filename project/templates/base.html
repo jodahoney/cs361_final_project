@@ -22,9 +22,13 @@
       <div class="col-sm-2" id="navbar">
         {% block sidebar %}
         <h5><a href="{{ url_for('index') }}">Trackagram</a></h5>
-        <ul>
-          <li><a href="">Food Log</a></li>
-        </ul>
+        {% if session['username'] %}
+          <ul>
+            <li><a href="{{ url_for('learning') }}">Learn More</a></li>
+            <li><a href="{{ url_for('settings') }}">Settings</a></li>
+            <li><a href="{{ url_for('logout') }}">Logout</a></li>
+          </ul>
+        {% endif %}
       </div>
       {% endblock %}
       <div class="col-sm-10" id="content">

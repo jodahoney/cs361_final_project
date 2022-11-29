@@ -5,9 +5,18 @@
 {% endblock %}
 
 {% block content %}
-  <h1>Welcome to Trackagram</h1>
+  
 
-  <p>
-    This will be the food diary main page
-  </p>
+  {% if session['username'] %}
+    <h1>Welcome to Trackagram {{ session['username'] }}</h1>
+
+    {{ meal_log_data }}
+
+  {% else %}
+    <h1>Welcome to Trackagram</h1>
+    <p>
+      Log in to access your food diary page.
+    </p>
+
+  {% endif %}
 {% endblock %}

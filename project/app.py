@@ -66,18 +66,53 @@ def register():
     # Show the login form with message (if any)
     return render_template('login.html')
 
+@app.route('/logout')
+def logout():
+    if 'loggedin' in session:
+        if session['loggedin']:
+            # clear user data from session
+            session['loggedin'] = False
+            session['id'] = None
+            session['username'] = None
+            return render_template('login.html')
+        else:
+            return render_template('index.html')
+    else:
+        return render_template('index.html')
+
+
 @app.route('/', methods=["GET", "POST"])
 def index():
     if 'loggedin' in session:
-        if session['loggedin']:
-            return render_template('index.html')
+        if session['loggedin'] and session['username']:
+            if request.method == "GET":
+                # get the meal log for the user, which gives us the mealLogEntries_mealLogEntryId
+                meal_log_query = "SELECT * FROM MealLogs WHERE users_userId = '%s';" % (session['id'])
+                cursor = db.execute_query(db_connection=db_connection, query=meal_log_query)
+                meal_log_data = cursor.fetchall()
+
+
+                return render_template('index.html', meal_log_data=meal_log_data)
         else:
             return render_template('login.html')
     else:
         return render_template('login.html')
 
+@app.route('/settings', methods=["GET", "POST"])
+def settings():
+    if session['loggedin']:
+        if request.method == "GET":
+            query = "SELECT * FROM Users WHERE userId = '%s';" % (session['id'])
+            cursor = db.execute_query(db_connection=db_connection, query=query)
+            data = cursor.fetchone()
 
+            return render_template('settings.html', data=data)
+        if request.method == "POST":
+            return render_template('settings.html')
 
+@app.route('/learning')
+def learning():
+    return render_template('learning.html')
 
 # Listener
 if __name__ == "__main__":
